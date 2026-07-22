@@ -2,22 +2,35 @@ let map;
 let markers = [];
 
 // Initialize the Google Maps
-async function initMap() {
+// async function initMap() {
+//     map = new google.maps.Map(document.getElementById("map"), {
+//         center: { lat: 20.5937, lng: 78.9629 }, // Default center: India
+//         zoom: 5,
+//         mapTypeControl: true,
+//         fullscreenControl: true,
+//         streetViewControl: false,
+//         styles: [
+//             {
+//                 featureType: "poi",
+//                 elementType: "labels",
+//                 stylers: [{ visibility: "off" }]
+//             }
+//         ]
+//     });
+// }
+
+
+window.initMap = function() {
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 20.5937, lng: 78.9629 },
         zoom: 5,
         mapTypeControl: true,
         fullscreenControl: true,
         streetViewControl: false,
-        styles: [
-            {
-                featureType: "poi",
-                elementType: "labels",
-                stylers: [{ visibility: "off" }]
-            }
-        ]
+        styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}]
     });
-}
+};
+
 function getStarRating(rating) {
     if (rating === 'No rating') return '<span class="no-rating">No ratings yet</span>';
     
@@ -60,7 +73,9 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingContainer.style.display = 'block';
 
         try {
-            const res = await fetch('/get-cold-storage', {
+            // LINK HERE
+            // const res = await fetch('/get-cold-storage', {
+            const res = await fetch(`${rootUrl}/get-cold-storage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `pincode=${pincode}&radius=${radius}`
@@ -159,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById("map").style.display = "block";
             }
         } catch (error) {
+            console.log(error)
             document.getElementById('result').innerHTML = `<div class="error">Connection error. Please check if the server is running.</div>`;
         }
     });

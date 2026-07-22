@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
     <title>Login Page</title>
 </head>
 
@@ -19,9 +20,12 @@
                 <input type="email" id="email" placeholder="Email" autocomplete="username">
                 <button type="button" id="sendOtp">Send OTP</button>
                 <input type="number" id="otp" placeholder="OTP" autocomplete="one-time-code">
-                <button type="button" id="verifyOtp">Verify OTP</button>
-                <input type="password" placeholder="Password" autocomplete="new-password">
-                <button>Sign Up</button>
+                <button type="button" class="white-btn" id="verifyOtp">Verify OTP</button>
+                <div class="password-container">
+                    <input type="password" id="signupPassword" placeholder="Password" autocomplete="new-password">
+                    <i class="fa-solid fa-eye toggle-password" data-target="signupPassword"></i>
+                </div>
+                <button class="white-btn">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
@@ -29,7 +33,10 @@
                 <h1>Sign In</h1>
                 <span>Use your email and password</span>
                 <input type="email" placeholder="Email" autocomplete="username">
-                <input type="password" placeholder="Password" autocomplete="current-password">
+                <div class="password-container">
+                    <input type="password" id="signinPassword" placeholder="Password" autocomplete="current-password">
+                    <i class="fa-solid fa-eye toggle-password" data-target="signinPassword"></i>
+                </div>
                 <a href="#" class="reset-password">Forget Your Password?</a>
                 <button>Sign In</button>
             </form>

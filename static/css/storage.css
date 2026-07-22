@@ -26,6 +26,8 @@ body {
 .map-container {
     flex: 1;
     min-width: 0;
+    /* remove this */
+    min-height: 400px;
 }
 
 .content-container {

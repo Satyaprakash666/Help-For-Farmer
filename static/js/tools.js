@@ -9,7 +9,9 @@ window.onload = function () {
     container.appendChild(loadingContainer);
     loadingContainer.style.display = 'block';
     
-    fetch('/get-tools')
+    // LINK HERE
+    // fetch('/get-tools')
+    fetch(`${rootUrl}/get-tools`)
         .then(response => response.json())
         .then(data => {
             loadingContainer.style.display = 'none';

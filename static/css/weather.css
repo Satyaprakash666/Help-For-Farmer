@@ -6,12 +6,22 @@
     font-family: 'Poppins', sans-serif;
 }
 
+
 body {
     min-height: 100vh;
     /* background: linear-gradient(to right, rgb(226, 226, 226), rgb(186, 255, 188)); */
     /* background: linear-gradient(135deg, #00b4d8, #90e0ef); */
     background: linear-gradient(135deg, rgb(233, 255, 232), rgb(127, 255, 131));
     transition: background 0.5s ease;
+
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
 }
 
 body.cloudy {
@@ -27,8 +37,8 @@ body.rain {
     background: linear-gradient(135deg, #023e8a, #0077b6);
 }
 
-.name{
-    color : rgb(43, 43, 43);
+.name {
+    color: rgb(43, 43, 43);
 }
 
 .container {
@@ -98,9 +108,25 @@ button:hover {
 
 .loader {
     display: none;
+    flex-direction: column;
+    background-color: white;
+    padding: 1.2rem 1rem 3rem;
+    border-radius: 20px;
     justify-content: center;
     align-items: center;
+    gap: 20px;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
     margin: 2rem 0;
+    min-width: 150px;
+    max-width: 50%;
+    margin: 2rem auto;
+}
+
+.loader > h2 {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .spinner {
@@ -113,11 +139,17 @@ button:hover {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.current-weather, .forecast {
+.current-weather,
+.forecast {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     padding: 2rem;
@@ -413,5 +445,5 @@ button:hover {
     font-weight: 500;
     text-align: left;
     padding-left: 0;
-    
-} 
+
+}

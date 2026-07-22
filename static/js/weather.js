@@ -1,10 +1,14 @@
 let API_KEY;
-fetch('/get-api-key')
+
+// LINK HERE
+// fetch('/get-api-key')
+fetch(`${rootUrl}/get-api-key`)
   .then(response => response.json())
   .then(data => {
     API_KEY = data.apiKey;
 })
 .catch(error => console.error('Error fetching API key:', error));
+
 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
@@ -15,6 +19,12 @@ const errorContainer = document.getElementById('errorContainer');
 const loader = document.getElementById('loader');
 const currentWeather = document.getElementById('currentWeather');
 const forecast = document.getElementById('forecast');
+const todayForecast = document.getElementById('todayForecast')
+const detailedSection = document.getElementById('detailedForecast');
+const container = document.querySelector('.detailed-forecast-container');
+const detailContainer = document.querySelector('.detailed-forecast-container');
+
+
 
 searchBtn.addEventListener('click', () => {
     const city = cityInput.value.trim();
@@ -65,6 +75,10 @@ async function getWeatherData(city) {
     showLoader();
     hideError();
 
+    setTimeout(async() => {
+        console.log("Hello after 2 seconds");
+    
+
     try {
         const formattedCity = encodeURIComponent(city.trim());
         
@@ -96,6 +110,9 @@ async function getWeatherData(city) {
     } finally {
         hideLoader();
     }
+
+
+    }, 4000);
 }
 
 async function getWeatherByCoordinates(lat, lon) {
@@ -183,9 +200,8 @@ function updateUI(weatherData, forecastData, airQualityData) {
     updateAirQuality(airQualityData);
     updateTodayForecast(forecastData);
     updateFiveDayForecast(forecastData);
-    currentWeather.style.display = 'block';
-    forecast.style.display = 'block';
     
+    detailContainer.innerHTML = '';
     document.getElementById('detailedForecast').style.display = 'none';
 }
 
@@ -262,10 +278,8 @@ function updateFiveDayForecast(forecastData) {
 
 async function showDetailedForecast(timestamp, forecastData) {
     const selectedDate = new Date(timestamp * 1000).setHours(0, 0, 0, 0);
-    const detailedSection = document.getElementById('detailedForecast');
-    const container = document.querySelector('.detailed-forecast-container');
     
-    container.innerHTML = '';
+    detailContainer.innerHTML = '';
     detailedSection.style.display = 'block';
 
     const dateHeader = document.createElement('h3');
@@ -277,7 +291,7 @@ async function showDetailedForecast(timestamp, forecastData) {
         day: 'numeric'
     });
     dateHeader.className = 'detailed-forecast-date';
-    container.appendChild(dateHeader);
+    detailContainer.appendChild(dateHeader);
 
     const dayForecasts = forecastData.list.filter(forecast => {
         const forecastDate = new Date(forecast.dt * 1000).setHours(0, 0, 0, 0);
@@ -302,7 +316,7 @@ async function showDetailedForecast(timestamp, forecastData) {
             <div class="humidity">Humidity: ${forecast.main.humidity}%</div>
             <div class="wind">Wind: ${forecast.wind.speed} m/s</div>
         `;
-        container.appendChild(card);
+        detailContainer.appendChild(card);
     });
 
     detailedSection.scrollIntoView({ behavior: 'smooth' });
@@ -329,18 +343,24 @@ function showLoader() {
     loader.style.display = 'flex';
     currentWeather.style.display = 'none';
     forecast.style.display = 'none';
+    todayForecast.style.display = 'none';
+    detailedSection.style.display = 'none'
 }
 
 function hideLoader() {
     loader.style.display = 'none';
     currentWeather.style.display = 'block';
     forecast.style.display = 'block';
+    todayForecast.style.display = 'block';
+    detailedSection.style.display = 'block'
 }
 
 function showError() {
     errorContainer.style.display = 'block';
     currentWeather.style.display = 'none';
     forecast.style.display = 'none';
+    todayForecast.style.display = 'none';
+    detailedSection.style.display = 'none'
 }
 
 function hideError() {

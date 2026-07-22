@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HelpForFarmer - Weather</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/weather.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,11 +13,10 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
-  <script src="{{ url_for('static', filename='js/firebase.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
 
 </head>
 <body>
+    <div class="main-content">
   <!-- Navigation Bar -->
   <div id="navbar-placeholder"></div>
 
@@ -40,6 +40,7 @@
     </div>
 
     <div class="loader" id="loader">
+        <h2>Fetching Your Request...</h2>
         <div class="spinner"></div>
     </div>
 
@@ -93,9 +94,12 @@
     </main>
   </div>
 
+  </div>
   <!-- Footer -->
   <div id="footer-placeholder"></div>
 
-  <script src="{{ url_for('static', filename='js/weather.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/weather.js') }}"></script>  
+  <script src="{{ url_for('static', filename='js/firebase.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
 </body>
 </html>

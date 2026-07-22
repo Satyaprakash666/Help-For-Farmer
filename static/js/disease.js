@@ -108,7 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
       loadingContainer.style.display = 'block';
       resultContainer.style.display = 'none';
 
-      fetch("/predict", {
+        // LINK HERE
+        // fetch('/predict', {
+        fetch(`${rootUrl}/predict`, {
           method: "POST",
           body: formData
       })

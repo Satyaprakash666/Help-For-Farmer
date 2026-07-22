@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function fetchCropInformation(cropName) {
     try {
-      const response = await fetch('/get_crop_info', {
+      // LINK HERE
+      // const response = await fetch('/get_crop_info', {
+      const response = await fetch(`${rootUrl}/get_crop_info`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

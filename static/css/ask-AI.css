@@ -50,6 +50,7 @@
   background-color: var(--white);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
+  min-height: 235px;
 }
 
 .search-container {

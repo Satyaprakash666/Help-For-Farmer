@@ -29,3 +29,5 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 // Debug initialization
 console.log("Firebase initialized successfully");
 console.log("Auth object:", auth); 
+
+

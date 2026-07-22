@@ -1,3 +1,7 @@
+// const rootUrl = 'https://helpforfarmer.onrender.com';
+const rootUrl = '';
+
+
 const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
@@ -14,7 +18,7 @@ function showAlert(message, type = 'info') {
         setTimeout(() => {
             document.body.removeChild(alertDiv);
         }, 500);
-    }, 3000);
+    }, 5000);
 }
 
 registerBtn.addEventListener('click', (event) => {
@@ -58,7 +62,9 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
         try {
-            const response = await fetch("/send-otp", {
+            // LINK HERE
+            // const response = await fetch('/send-otp', {
+            const response = await fetch(`${rootUrl}/send-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: email, name: name })
@@ -68,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("Server response:", result);
 
             if (response.ok) {
+                verifyOtpBtn.classList.remove("white-btn");
                 showAlert(result.message, "success");
             } else {
                 showAlert(result.error, "error");
@@ -88,19 +95,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         try {
-            const response = await fetch("/verify-otp", {
+            // LINK HERE
+            // const response = await fetch('/verify-otp', {
+            const response = await fetch(`${rootUrl}/verify-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: email, otp: otp })
             });
 
             const result = await response.json();
-            console.log("Server response:", result);
+            // console.log("Server response:", result);
             
             if (response.ok) {
                 isOtpVerified = true;
+                otpInput.disabled = true;
+                otpInput.type = "password";
+                verifyOtpBtn.classList.add("white-btn");
+                sendOtpBtn.classList.add("white-btn");
+                signUpBtn.classList.remove("white-btn");
+
                 showAlert(result.message, "success");
-            } else {
+            } 
+            else {
                 showAlert(result.error, "error");
             }
         } catch (error) {
@@ -109,59 +125,49 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    signUpBtn.addEventListener("click", (event) => {
+    signUpBtn.addEventListener("click", async (event) => {
         event.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = signUpPassword.value;
+        const name = nameInput.value.trim();
+        const otp = otpInput.value.trim();
+
+        if (!email || !password || !name || !otp) {
+            showAlert("Please fill in all fields and verify OTP", "warning");
+            return;
+        }
+
         if (!isOtpVerified) {
             showAlert("Please verify your OTP first", "warning");
             return;
         }
 
-        const email = emailInput.value.trim();
-        const password = signUpPassword.value;
-        const name = nameInput.value.trim();
-
-        if (!isOtpVerified) {
-            showAlert("Please verify your OTP first");
-            return;
-        }
-
-        if (!email || !password || !name) {
-            showAlert("Please fill in all fields", "warning");
-            return;
-        }
-
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                return user.updateProfile({
-                    displayName: name
-                });
-            })
-            .then(() => {
-                fetch('/store_user', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        name: name
-                    })
-                });
-                showAlert("Registration successful!", "success");
-                setTimeout(() => {
-                    window.location.href = "/home";
-                }, 500);
-            })
-            .catch((error) => {
-                const messages = {
-                    'auth/email-already-in-use': "This email is already registered. Please use a different email or try logging in.",
-                    'auth/invalid-email': "Please enter a valid email address.",
-                    'auth/operation-not-allowed': "Email/password accounts are not enabled. Please contact support.",
-                    'auth/weak-password': "Password is too weak. Please use a stronger password."
-                };
-                showAlert(messages[error.code] || "Registration failed: " + error.message, "error");
+        try {
+            // LINK HERE
+            const response = await fetch(`${rootUrl}/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, name, password, otp })
             });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showAlert("Registration successful!", "success");
+
+                // Reuse existing sign-in logic
+                signInEmail.value = email;
+                signInPassword.value = password;
+                signInBtn.click();  // triggers the existing signInBtn listener
+            } else {
+                showAlert(result.error || "Registration failed", "error");
+            }
+
+        } catch (error) {
+            console.error("Error during registration:", error);
+            showAlert("An error occurred during registration", "error");
+        }
     });
     
     signInBtn.addEventListener("click", (event) => {
@@ -179,7 +185,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 const user = userCredential.user;
                 console.log("Sign-in successful, user:", user);
                 showAlert("Sign in successful!", "success");
-                window.location.href = "/home";
+                // LINK HERE
+                // window.location.href = "/home";
+                window.location.href = `${rootUrl}/home`;
             })
             .catch((error) => {
                 const messages = {
@@ -220,16 +228,30 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+
+    document.querySelectorAll(".toggle-password").forEach(icon => {
+        icon.addEventListener("click", function () {
+
+            const input = document.getElementById(this.dataset.target);
+
+            if (input.type === "password") {
+                input.type = "text";
+                this.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                input.type = "password";
+                this.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        });
+    });
+
+
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             setTimeout(() => {
-                window.location.href = "/home";
+                // LINK HERE
+                // window.location.href = "/home";
+                window.location.href = `${rootUrl}/home`;
             }, 1000);
-        } else {
-            console.log("User is signed out");
-            if (window.location.pathname != '/') {
-                window.location.href = "http://127.0.0.1:5000/";
-            }
         }
     });
 });

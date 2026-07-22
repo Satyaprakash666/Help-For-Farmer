@@ -1,9 +1,31 @@
+// const rootUrl = 'https://helpforfarmer.onrender.com';
+const rootUrl = '';
+// rootUrl = 'http://127.0.0.1:5000'
+
+
 firebase.auth().onAuthStateChanged((user) => {
-    console.log("Auth state changed. User:", user ? "Authenticated" : "Not authenticated");
     if (!user) {
-        window.location.href = "http://127.0.0.1:5000/";
-    } 
+    //     console.log("User logged in:", user.email);
+
+    //     // LINK HERE
+    //     // if (window.location.pathname === '/') {
+    //     if (window.location.pathname === `${rootUrl}/`) {
+    //         setTimeout(() => {
+    //             // LINK HERE
+    //             // window.location.href = "/home";
+    //             window.location.href = `${rootUrl}/home`;
+    //         }, 1000);
+
+    //     }
+    // } else {
+        console.log("User logged out");
+        if (window.location.pathname !== `${rootUrl}/`) {
+            window.location.href = `${rootUrl}/`;
+        }
+    }
 });
+
+
 console.log('navbar.js loaded');
 function redirectToPage(url) {
     console.log('Redirecting to:', url);
@@ -69,7 +91,9 @@ function redirectToPage(url) {
 // Function to load navbar HTML
 function loadNavbar() {
     console.log('Loading navbar HTML');
-    fetch("/navbar")
+    // LINK HERE
+    fetch(`${rootUrl}/navbar`)
+    // fetch('/navbar')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -105,7 +129,8 @@ function setupNavButtons() {
             const url = this.getAttribute('href');
             console.log('Button clicked, URL:', url);
             if (url) {
-                window.location.href = 'http://127.0.0.1:5000' + url;
+                // LINK HERE
+                window.location.href = `${rootUrl}` + url;
             } else {
                 console.error('No URL found for button');
             }
@@ -115,7 +140,9 @@ function setupNavButtons() {
 
 function loadFooter() {
     console.log('Loading footer HTML');
-    fetch("/footer")
+    // LINK HERE
+    fetch(`${rootUrl}/footer`)
+    // fetch('/footer')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -155,13 +182,14 @@ function initDropdown() {
     
     console.log('Account button and dropdown found');
     
-    // Get current user and update email and name
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             if (userEmail) {
                 userEmail.textContent = user.email;
             }
-            fetch('/get_user', {
+            // LINK HERE
+            // fetch('/get_user', {
+            fetch(`${rootUrl}/get_user`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -179,7 +207,8 @@ function initDropdown() {
             });
         }
     });
-    
+
+
     const newAccountButton = accountButton.cloneNode(true);
     accountButton.parentNode.replaceChild(newAccountButton, accountButton);
     
@@ -200,7 +229,6 @@ function initDropdown() {
     document.removeEventListener('click', newDocumentClickHandler);
     document.addEventListener('click', newDocumentClickHandler);
     
-    // Prevent dropdown from closing when clicking inside
     dropdown.addEventListener('click', function(e) {
         e.stopPropagation();
     });
@@ -213,7 +241,9 @@ function initDropdown() {
             console.log('Logout button clicked');
             dropdown.classList.remove('show');
             firebase.auth().signOut().then(() => {
-                window.location.href = '/';
+                // LINK HERE
+                // window.location.href = '/';
+                // window.location.href = `${rootUrl}/`;
             }).catch((error) => {
                 console.error('Error signing out:', error);
             });
@@ -222,14 +252,12 @@ function initDropdown() {
     console.log('Navbar dropdown initialized');
 }
 
-// Initialize dropdown when the page loads
 document.addEventListener("DOMContentLoaded", () => {
     console.log('DOM content loaded');
     loadNavbar();
     loadFooter();
 });
 
-// Reinitialize dropdown after navigation
 window.addEventListener('popstate', () => {
     console.log('Navigation state changed');
     if (document.getElementById('account-button') && document.getElementById('account-dropdown')) {
@@ -237,7 +265,6 @@ window.addEventListener('popstate', () => {
     }
 });
 
-// Reinitialize dropdown after content is loaded
 window.addEventListener('load', () => {
     console.log('Window loaded');
     if (document.getElementById('account-button') && document.getElementById('account-dropdown')) {
